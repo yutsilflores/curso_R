@@ -1,0 +1,486 @@
+---
+title: "Introducción a R"
+author: "Cisneros Sosa Jonathan Manuel /n/Flores Escamilla Isaura Yutsil Rojas Julio"
+date: "August 24, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1.7.1. Actividad I: tipos básicos de datos
+###1. Siga las instrucciones de los cordinadores para abrir R. Luego ejecute las siguientes sentencias y describa lo que realizan.
+
+```{r}
+x <- 1:10; y <- 10L; z <- 1+5i; x; y; z;
+```
+En el objeto *x* definimos una secuencia numérica del 1 al 10. Se imprime en forma de vector.
+En el objeto *y* definimos un elemento de tipo integer.
+En el objeto *z* definimos un elemento de tipo *complex*, un número con parte real de 1, y parte compleja de 5.
+
+```{r}
+x <- c("a", "b", "c"); x
+```
+Ahora, redefinimos al objeto x como un vector del tipo *character*, pues almacena datos de tipo texto. 
+
+```{r}
+vector("numeric", length = 10) -> x; x
+```
+Finalmente, se redefine a *x* como un vector del tipo numérico con longitud diez. Notemos que en este caso
+se imprime 10 veces el valor de 0.
+
+
+```{r}
+m <- matrix(1:6, nrow = 2, ncol = 3); m
+```
+
+Definición de una matriz: se pide que se rellene con la secuencia de números del uno al seis,
+y se asigna el número de renglores como 2, mientras que el número de columnas es de 3.
+
+
+```{r}
+dim(m); attributes(m)
+```
+La función *dim* regresa las dimensiones de la matriz.
+Por su parte, la función *attributes* da un listado de atributos del objeto.
+
+
+```{r}
+m <- 1:10; m
+```
+Reasignamos al objeto *m* una secuencia numérica del 1 al 10. En este caso, m deja de ser matriz para convertirse en vector numérico.
+
+
+```{r}
+dim(m) <- c(2,5); m
+```
+Asignamos dimensiones de 2 renglones y 5 columnas al objeto m, por lo que m se convierte en una matriz. 
+
+
+```{r}
+x <- 1:3; y <- 10:12; x; y
+
+```
+Se crean los objetos *x* y *y*, que son secuencias numéricas del 1 al 3 y del 10 al 12.
+
+```{r}
+cbind(x,y); rbind(x,y)
+```
+ *cbind* combina los vectores *x* y *y* por columnas.
+ *rbind* combina los vectores *x* y *y* por renglones.
+ 
+##2. Continuemos inspeccionando la salida de las siguientes instrucciones. ¿Qué obtenemos en cada una de ellas?
+
+```{r}
+x <- list(1, "a", TRUE, 1 + 4i); x
+```
+Creación de una lista que contiene argumentos del tipo *numeric*, *character*, *boolean* y *complex*.
+
+```{r}
+x <- factor(c("yes", "yes", "no", "yes")); x
+```
+Se toma un vector con datos del tipo *character* y se codifica como factor. Los niveles que se obtienen con *no* y *yes*.
+
+
+```{r}
+table(x); unclass(x)
+```
+*table* construye una tabla de contingencia del conteo de los factores.
+*unclass* 
+
+```{r}
+x <- data.frame(foo = 1:3, bar=c(T, T, F)); x
+```
+Creación de un data frame (o marco de datos), que dos filas.
+La primera de ellas, nombrada "foo" contiene la secuencia de datos numéricos del 1 al 3, mientras que 
+la segunda columna, con nombre "bar" contiene datos del tipo *boolean*.
+
+```{r}
+nrow(x); ncol(x); names(x)
+```
+*nrow* indica el número de renglones del objeto en cuestión, en este caso, nuestro data frame, mientras
+que *ncol* nos indica el número de columnas.
+*names* es una función que da los nombres de un objeto. 
+
+```{r}
+x$foo; x[[1]]; x[,1] ; x[,-2]; x[1,1]; x["foo"];x[["foo"]]
+x[1, 2]; x[1, 2, drop = FALSE]
+
+```
+
+
+```{r}
+rep(10,4); seq(1,10,by=0.1)
+```
+
+ La función *rep* repite el primer argumento el número de veces indicado en el segundo argumento. En este caso, repite el número 10 cuatro veces. 
+En el caso de la función *seq*, crea una secuencia del 1 al 10 con saltos de 0.1.
+
+```{r}
+ls(); rm(list=ls()); ls()
+```
+
+*ls()* regresa el vector de caracteres con los nombres de los objetos que hay en el entorno en que se está trabajando.
+*rm()* es una función utilizada para eliminar objetos.
+
+```{r}
+getwd(); setwd(getwd())
+```
+*getwd* develve un archivo de ruta con el directorio donde está trabajando R.
+*setwd* se utiliza para configurar el directorio de tranajo de R.
+
+##3. numeric: genere un vector “x” del 1 al 10
+###a) Utilice: operador de secuencia (“:”) y función de concatenación (c).
+```{r}
+x <- c(1:10)
+```
+###b) ¿Cómo accede al segundo elemento?
+
+```{r}
+x[2]
+```
+###c) Cambie los valores de las posiciones 1,3,6 por el valor 20
+```{r}
+x[c(1,3,6)] <- 20
+```
+
+##4.matrix: genere una matriz de 4x5 con números del 1 al 20.
+
+###a) Utilize el parámetro byrow=TRUE y byrow=FALSE. ¿Qué diferencias hay entre las dos invocaciones?
+```{r}
+m <- matrix(1:20, nrow = 4,  ncol=5, byrow = T)
+m2<- matrix(1:20, nrow = 4,  ncol=5, byrow = F)
+```
+La diferencia es que en la primera invocación la matriz es rellenada renglón por renglón mientras que en la segunda invocación se hace por columnas. 
+
+###b) Genere una matriz 3*4 de números aleatorios. Sugerencia: vea la función “rnorm”.
+```{r}
+m3 <- matrix(rnorm(3*4), nrow=3, ncol=4)
+
+```
+
+##5. data.frame: genere el data.frame “df ” mostrado en la tabla 1.
+```{r}
+df <-data.frame (X=1:3, Nombres = c("Juan", "Pedro", "Marcelo"))
+```
+
+###a) ¿Cómo obtengo los nombres de las columnas de “df ”?
+```{r}
+df$Nombres
+```
+###b) ¿Cómo obtiene el tipo de dato del atributo Nombre?
+
+```{r}
+class(df$Nombres)
+```
+
+###c) ¿Cómo accedo a la palabra “Marcelo”?
+```{r}
+df$Nombres[3]
+df[3,2]
+```
+Debido a que *df$Nombres* es un dato del tipo *factor*, lo imprime como tal, y se indica en la parte de abajo cuáles son todos los niveles. Si quisieramos acceder únicamente a la palabra *Marcelo* como un carácter, tendríamos entonces que ejecutar el siguiente comando:
+```{r}
+as.character(df$Nombres[3])
+```
+###d) ¿Cómo le puedo cambiar el valor asociado a “Juan”?
+
+```{r}
+
+```
+
+##6. A partir de los datos de la tabla 2, genere el data.frame Alumnos donde una de las columnas se denomina Nombre y la otra Notas.
+```{r}
+Alumnos <- data.frame(Nombre = c("Ramirez", "Fonseca", "Villamil", "Castroman", "Robledo"),
+                      Notas = c(8, 10, 3, 5, 9))
+```
+
+###a) Ejecute el siguiente comando. ¿Que realiza la sentencia?
+```{r}
+Alumnos$Notas2<-c(1:nrow(Alumnos))
+```
+Crea una nueva columna con nombre Notas2, y es rellenada con un vector de 1 hasta la longitud de los renglones Alumnos (que es 5).
+
+##1.9.1.Actividad II: estructuras de control y ciclos
+###1. Ejecute las siguientes sentencias y describa la salida de consola.
+
+```{r}
+a <- 1:10
+for(i in a){
+  if(i >(length(a)/2)){
+		cat(i+2,";")
+  }
+  else{
+    cat(i*i,";")  
+  }
+}
+cat("\n")
+
+```
+En el código anterior lo primero que hacemos es asignar al objeto *a* una secuencia del 1 al 10, y posteriormente utilizamos un ciclo, suyo índice va de 1 a 10. 
+Dentro del ciclo, tenemos una condición: sí nuestro índice *i* es mayor a la longitud de *a* entre dos (es decir $\frac{10}{2}=5$), la función *cat* va a concatenar el número *i+2*, tomando como separación el signo de *";"*. En el caso de todos los índices que sean menores o iguales a cinco, se concatena el cuadrado de nuestro índice y se separa por *";"*. Así, en nuestros datos de salida obtenemos por ejemplo los primeros tres valores $1^2 =1$, $2^2 =4$, $3^2 =9$, mientras que los últimos tres están definidos por: $8+2 =10$, $9+2=11$ y $10+2 =12$.
+
+##1.10.1. Actividad III: funciones
+###1. Ejecute las siguientes sentencias y describa la salida de consola.
+
+```{r}
+promedio <- function(valores){
+  acumulador <-0
+  #recoremos el vector valores y acumulamos
+  for(indice in 1:length(valores)){
+    acumulador<-acumulador+valores[indice]
+  }
+  #devolvemos la suma dividido la cantidad de elementos
+  return(acumulador/length(valores))
+}
+promedio(1:10)
+```
+La función promedio es una función que requiere un sólo argumento, un vector numérico. Para realizar el promedio, primero toma como auxiliar el objeto *acumulador*, que se inicia en 0, y posteriormente entra a un ciclo, con índice de 1 hasta la longitud del argumento dado, y dentro del ciclo va a ir sumando cada uno de los elementos del argumento.
+   Finalmente, regresa la suma de todas las entradas del argumento dividida entre la longitud del mismo, es decir, el promedio.
+   
+  En el ejemplo dado, se ejecuta la nueva función tomando como argumento a la secuencia de 1 al 10, y devuelve como valor 5.5.
+
+##2. Implementar una función que permita calcular $\ $ y otra para $\ $ 
+
+###a) Defina las funciones utilizando ciclos
+```{r}
+#Para el cálculo de x barra utilizando ciclos:
+
+ x_barra <-function(x){
+   aux <- 0
+   n<- length(x)
+   for(i in 1:n){
+     aux<- aux + x[i]
+   }
+   return((1/n)*aux)
+ }
+
+x_barra(1:10)
+
+#Para el cálculo de la varianza:
+
+varianza <- function(x){
+   aux <- 0
+   n<- length(x)
+   #Primero debemos calcular x barra. Usando el ciclo pasado:
+   for(i in 1:n){
+     aux<- aux + x[i]
+   }
+   x_barra <- aux/n
+   #Ahora creamos un ciclo para la suma de las (xi-x_barra)
+   suma <- 0
+   for(i in 1:n){
+     suma <- suma + (x[i] - x_barra)^2
+   }
+   return((1/(n-1))*suma)
+ }
+ 
+#Ejemplo:
+varianza(1:10)
+```
+
+###b) Defina las funciones utilizando funciones disponibles en el lenguaje
+
+```{r}
+#Para el cálculo de x barra, con funciones predeterminadas:
+#Caso 1)
+x_barra2 <-function(x){
+   n<- length(x)
+   aux <- sum(x)
+   return((1/n)*aux)
+}
+x_barra2(1:10)
+
+#Caso 2) La función ya está disponible en R sin necesidad de programarla.
+mean(1:10)
+ 
+#Varianza usando funciones disponibles en el lenguaje
+ #Caso 1)
+ varianza2 <- function(x){
+   n<- length(x)
+   return(sum((x-mean(x))^2)/(n-1))
+ }
+ #Ejemplo:
+ varianza2(1:10)
+ 
+ #Caso 2)
+ #La función varianza también ya está disponible en R:
+ 
+ var(1:10)
+```
+
+###c) Calcule la media y el desvio estandard de las *Notas* de los *Alumnos* utilizando las dos versiones.
+#1.11. Scripts
+##1.11.1. Actividad IV: scripts
+
+###1. Guarde en el archivo “funciones.R” la declaración de las dos funciones anteriores (media y varianza).
+
+###2. Guarde el objeto Alumno para su posterior procesamiento en Alumnos.RData y cierre R (no guarde el espacio de trabajo).
+#1.12. Lectura de Datos
+##1.12.1. Actividad V: lectura de archivos
+
+###1. Utilizando algún paquete de oficina y editor de texto plano, abra el archivo “pizzas.csv” para su visualización.
+###a) ¿Cual es la dimensión del archivo?
+El archivo tiene 32 renglones y 9 columnas. Todas ellas con encabezados.
+
+###b) ¿Cómo se llaman las columnas?
+Los nombres de las columnas son: OBS, ID, PH, PROT, GRA, CEN, SOD, CARB y CAL.
+
+###c) ¿Qué tipo de dato poseen?
+Tiene datos numéricos y datos de tipo entero.
+
+##2. Utilizando el comando help(...) de R explore las funciones read.csv,read.csv2 y read.table
+
+*read.table* sirve para leer un archivo en formato de tabla y crear un data frame en R apartir de él. 
+
+*read.csv* y *read.csv2* son casos particulares de *read.table*, el primero funciona para la lectura de archivos con formato *.csv* ("comma separated value"). Aunque en primera instancia ésto supone que las separaciones estarán dadas por una coma, la realidad es que dentro de la función existe el argumento *sep = *, en el cual indicamos si la separación en nuestros documentos se dan por *,*, *;*, o espacios en blanco.
+La diferencia principal entre *read.csv* y *read.csv2* radica en que *read.csv2* está diseñada para los casos de algunas comunidades europeas, en donde usan una coma como punto decimal y un punto y coma como separador de campo. 
+
+#1.13. Exploración de datos
+##1.13.1. Actividad VI: exploración de datos
+###1. Trabaje con el objeto pizzas
+```{r}
+pizzas <- read.csv(file="pizzas.csv", header=T)
+```
+###a) ¿Cual es la dimensión del archivo?
+```{r}
+dim(pizzas)
+```
+###b) ¿Cómo se llaman las columnas?
+```{r}
+colnames(pizzas)
+```
+###c) ¿Qué tipo de dato poseen? *Sugerencia*: utilice la función str(...). Interprete.
+```{r}
+str(pizzas)
+```
+La función str nos indica que contamos con 32 observaciones y 9 variables, entre las cuales hay tipo integer (enteros) y tipos numéricos. Luego entonces, nuestra tabla tiene en la primer columna el nombre de la variable, e inmediatamente después el tipo de dato del que se trata, así como las primeras observaciones.
+
+###d) Obtenga medidas descriptivas resumenes de los atributos de la base utilizando las función summary(...). ¿Tiene sentido hacerlo sobre todas las variables?
+
+```{r}
+summary(pizzas)
+```
+
+No en todas las observaciones deberíamos de hacer un *summary*, pues en el caso de *OBS* y *ID*, las medidas descriptivas no tienen sentido, dado que únicamente sirven para identificar las muestras.
+
+###2)
+
+###a) Carge los datos con el comando data(iris). ¿Qué clase es el objeto iris?
+
+```{r}
+data(iris)
+class(iris)
+
+```
+
+###b) ¿Cual es la dimensión de la base?
+```{r}
+dim(iris)
+```
+
+###c) ¿Cómo se llaman las columnas?
+
+```{r}
+colnames(iris)
+```
+
+###d) ¿Qué tipo de dato poseen?
+
+```{r}
+str(iris)
+```
+
+###e) Obtenga medidas descriptivas resumenes de los atributos de la base.
+
+```{r}
+summary(iris)
+```
+
+##1.13.2. Actividad VII: exploración con gráficas
+###1. . Interprete la salida de los siguientes comandos.¿Qué tipo de gráficas son?¿Tiene sentido incluir variables nominales?
+
+```{r}
+boxplot(iris)
+```
+
+Produce un diagrama de cajas de los datos en iris.
+Nótese que para este caso no tiene sentido realizar el diagrama de cajas para la variable *Species*, debido a que ésta variable contiene el nombre de la especie a la que pertenece cada muestra, es decir, es una variable categórica.
+
+
+```{r}
+hist(iris$Sepal.Length)
+```
+
+Histograma de la longitud de los sépalos de iris, en donde se grafica la cuál es la frecuencia de las longitudes.
+
+```{r}
+plot(x=iris$Sepal.Length, y=iris$Sepal.Width,col=iris$Species)
+legend("topright",legend=levels(iris$Species),pch=rep("O",3),col=1:3)
+```
+
+*plot* es la función genérica para generar gráficas en R. En la función se han puesto como argumentos los datos que se desean graficar en el eje de las *x* como longitud del sépalo contra el eje de las *y*, el ancho del sépalo. Además se ha indicado que se van a colorear deacuerdo a la especie de iris que se trate. 
+La siguiente función, *legend* sirve para introducir una leyenda dentro de nuestra gráfica, que se localizará en la esquina superior derecha, tendrá como legenda los nombres de las especies de iris, y tendrá como símbolo de trazado círculos.
+
+```{r}
+pairs(iris,col=iris$Species)
+```
+
+Produce un un conjunto de gráficas de dispersión, en donde podemos ver la relación entre pares de variables. Al agregarle el argumento *col*
+  le pedimos que coloree todos los puntos deacuerdo a las especies presentadas en iris.
+Cabe destacar que en este caso no tiene sentido considerar la variable *Specie*.
+
+###2. Adicionalmente, se puede realizar diferentes tipos de análisis multivariados como por ejemplo con Componentes Principales. Interprete la salida de los siguientes commandos.
+
+```{r}
+fit <- princomp(iris[,-5], cor=TRUE)
+```
+
+La función *princomp* hace el cálculo de las componentes principales de las variables de datos *iris*, sin considerar la variable especie. En el argumento *cor* se indica que la correlación será cierta, es decir, que para el cálculo de las componentes se usará la matriz de correlación.
+
+
+```{r}
+summary(fit) 
+```
+
+Se hace un summary del objeto *fit*, en donde se indica la desviación estándar de cada una de las componentes, la proporción que tiene cada una de las componentes, así como la varianza acumulada. Para este caso en particular, con las dos primeras componentes acumulamos un 95% de varianza, por lo que podríamos trabajar únicamente con dos variables, en vez de 4.
+
+```{r}
+screeplot(fit,type="lines")
+```
+
+La función *screeplot* funciona para graficar la varianza con respecto a cada una de nuestras componentes principales. 
+
+```{r}
+loadings(fit)
+```
+
+Ésta función sirve para extraer los pesos que se le han asignado a nuestras variables para las componentes principales (o análisi de factores, de ser el caso).
+  Así por ejemplo, tenemos que:
+  
+  $$ 
+  Componente1 = 0.521 * Sepal.Length - 0.269 * Sepal.Width + 0.580 * Petal.Lenght + 0.565 * Petal.Width \\
+  Componente2 = -0.377 * Sepal.Length - 0.923 * Sepal.Width 
+  $$
+```{r}
+par(mfrow=c(2,2))
+apply(loadings(fit),2,barplot)
+```
+ 
+ La primer función se utiliza para poder más de una gráfica, en este caso, en una "matriz" de 2x2.
+ *apply* aplica una función a una matriz, vector o lista que se le pase como parámetro. En nuestro ejemplo, el parámetro será los pesos del objeto *fit*. El segundo parámetro es MARGIN, toma el valor de 1 cuando se desea operar sobre renglones, y 2 cuando se desea hacerlo por columnas. Finalmente, la función a aplicar es un barplot.
+
+```{r}
+graphics.off()
+```
+
+Ésta función provee un control sobre las gráficas. Cuando no se ingresa ningún argumento, lo que hace es eliminar las gráficas que se han realizado hasta el momento.
+
+```{r}
+biplot(fit,xlabs=c(rep("*",50),rep("o",50),rep("x",50)))
+```
+
+Realiza una gráfica de tipo biplot con los datos en fit (es decir, las componentes principales). El argumento de xlabs sirve para etiquetar el conjunto de puntos. Los primeros cincuenta tendrán etiqueta de "*", los siguientes 50 serán  "o" y los últimos 50 serán "x".
+
+
